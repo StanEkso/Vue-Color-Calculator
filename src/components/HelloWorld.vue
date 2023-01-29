@@ -1,46 +1,36 @@
 <template>
   <div class="hello">
-    <color-picker v-bind="RGBColor" @input="log" />
-    <h1>Current Color: {{ JSON.stringify(RGBColor) }}</h1>
-    <h1>{{ msg }}</h1>
+    <h1>Current Color: {{ HEXColor }}</h1>
+    <h2>Preview:</h2>
+    <div class="w-32 h-32 border-2" :style="previewStyles"></div>
+    <ColorInput :color="RGBColor" @update:color="setRGB" color-type="rgb" />
+    <ColorInput :color="CMYColor" @update:color="setCMY" color-type="cmy" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
+import ColorInput from "./ColorInput.vue";
 
 export default defineComponent({
   name: "HelloWorld",
-  props: {
-    msg: String,
-  },
   computed: {
-    ...mapGetters(["RGBColor", "HSVColor"]),
+    ...mapGetters(["RGBColor", "HSVColor", "HEXColor", "CMYColor"]),
+    previewStyles(): Record<string, string> {
+      return {
+        backgroundColor: this.HEXColor,
+      };
+    },
   },
   methods: {
-    // ...mapActions(["setRGBColor"]),
-    log(...args: any[]) {
+    ...mapActions(["setRGB", "setHSV", "setCMY"]),
+    log(...args: unknown[]) {
       console.log(...args);
     },
   },
+  components: {
+    ColorInput,
+  },
 });
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-</style>

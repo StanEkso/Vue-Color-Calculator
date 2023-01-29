@@ -15,3 +15,10 @@ export interface CMYColor {
   m: number;
   y: number;
 }
+
+export type Color = RGBColor | HSVColor | CMYColor;
+
+export interface ColorInputOption {
+  min: number;
+  max: number;
+}
