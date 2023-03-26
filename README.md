@@ -1,24 +1,25 @@
-# color-calculator
+# Color Calculator
 
-## Project setup
-```
-npm install
-```
+This project is involves three color models: `RGB`, `HSV` and `CMY` (not `CMYK`). Main idea - to perform calculations between three models and render changes.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## Preview on Desktop
 
-### Compiles and minifies for production
-```
-npm run build
-```
+![Desktop Preview](./preview/desktop.png)
 
-### Lints and fixes files
-```
-npm run lint
-```
+## Links
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Visit this [link](https://vue-color-calculator-stanekso.vercel.app) to check by yourself.!
+
+## Technologies
+
+- Vue.JS
+- Vuex (Source of all colors)
+- TailwindCSS for styling
+
+## Project Features
+
+- Simultaneous changes on all inputs
+- Both numeral and range inputs to control colors.
+- Preview for color
+- HEX color (In my opinion - convenient)
+- There is only one true color: RGB. Other colors are computed using Vuex
