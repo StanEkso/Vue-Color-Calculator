@@ -4,7 +4,6 @@
       <h1 class="text-3xl font-bold">Color-Picker</h1>
       <div class="flex gap-2">
         <router-link to="/">Main</router-link>
-        <router-link to="/settings">Settings</router-link>
       </div>
     </nav>
   </header>

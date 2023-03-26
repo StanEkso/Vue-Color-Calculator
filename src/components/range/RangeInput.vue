@@ -2,7 +2,7 @@
   <input
     type="range"
     @input="onChange"
-    class="rounded-sm border appearance-none range"
+    class="rounded-sm appearance-none range min-w-[180px]"
     :name="name"
     :max="max"
     :min="min"

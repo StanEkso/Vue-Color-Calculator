@@ -1,34 +1,36 @@
 <template>
-  <h3 class="text-xl font-semibold">
-    {{ Object.keys(color).join("").toUpperCase() }}
-  </h3>
-  <div
-    v-for="([key, value], index) in Object.entries(color)"
-    :key="key"
-    class="flex gap-2 items-center"
-  >
-    <label :for="key" class="w-8 text-center font-black">{{
-      key.toUpperCase()
-    }}</label>
-    <NumberInput
-      :value="value"
-      @update:value="onColorChange"
-      :name="key"
-      :min="options[index]?.min || 0"
-      :max="options[index]?.max || 100"
-    />
-    <div class="relative">
-      <div
-        class="absolute h-3 top-1 w-full bg-opacity-50 z-0 pointer-events-none rounded-sm"
-        :style="colorGradient(key)"
-      ></div>
-      <RangeInput
+  <div class="flex flex-col gap-1">
+    <h3 class="text-xl font-semibold">
+      {{ Object.keys(color).join("").toUpperCase() }}
+    </h3>
+    <div
+      v-for="([key, value], index) in Object.entries(color)"
+      :key="key"
+      class="flex gap-2 items-center"
+    >
+      <label :for="key" class="w-8 text-center font-black">{{
+        key.toUpperCase()
+      }}</label>
+      <NumberInput
         :value="value"
         @update:value="onColorChange"
         :name="key"
         :min="options[index]?.min || 0"
         :max="options[index]?.max || 100"
       />
+      <div class="relative">
+        <div
+          class="absolute h-3 top-[6px] w-full bg-opacity-50 z-0 pointer-events-none rounded-lg"
+          :style="colorGradient(key)"
+        ></div>
+        <RangeInput
+          :value="value"
+          @update:value="onColorChange"
+          :name="key"
+          :min="options[index]?.min || 0"
+          :max="options[index]?.max || 100"
+        />
+      </div>
     </div>
   </div>
 </template>
