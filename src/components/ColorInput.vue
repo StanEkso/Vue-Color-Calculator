@@ -82,21 +82,32 @@ export default defineComponent({
     colorGradient(num = 0) {
       const values = [this.rgbColor.r, this.rgbColor.g, this.rgbColor.b];
       values[num] = 0;
-      const start = `rgba(${values.join(",")}, 0.5)`;
+      const start = `${values.join(",")}`;
       values[num] = 255;
-      const end = `rgba(${values.join(",")}, 0.5)`;
+      const end = `${values.join(",")}`;
       switch (this.colorType) {
-        case "hsv":
+        case "hsv": {
+          const convertedStartColor = hsvToRgb({
+            ...this.color,
+            [Object.keys(this.color)[num]]: 0,
+          } as HSVColor);
+          const convertedEndColor = hsvToRgb({
+            ...this.color,
+            [Object.keys(this.color)[num]]: this.options[num].max,
+          } as HSVColor);
+          const start = `${convertedStartColor.r}, ${convertedStartColor.g}, ${convertedStartColor.b}`;
+          const end = `${convertedEndColor.r}, ${convertedEndColor.g}, ${convertedEndColor.b}`;
           return {
-            backgroundImage: `linear-gradient(to right, ${start}, ${end})`,
+            backgroundImage: `linear-gradient(to right, rgba(${start}, 0.5), rgba(${end}, 0.5))`,
           };
+        }
         case "cmy":
           return {
-            backgroundImage: `linear-gradient(to right, ${end}, ${start})`,
+            backgroundImage: `linear-gradient(to right, rgba(${end}, 0.5), rgba(${start}, 0.5))`,
           };
         default:
           return {
-            backgroundImage: `linear-gradient(to right, ${start}, ${end})`,
+            backgroundImage: `linear-gradient(to right, rgba(${start}, 0.5), rgba(${end}, 0.5))`,
           };
       }
     },

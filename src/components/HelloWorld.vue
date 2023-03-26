@@ -5,6 +5,16 @@
     <div class="w-32 h-32 border-2" :style="previewStyles"></div>
     <ColorInput :color="RGBColor" @update:color="setRGB" color-type="rgb" />
     <ColorInput :color="CMYColor" @update:color="setCMY" color-type="cmy" />
+    <ColorInput
+      :color="HSVColor"
+      @update:color="setHSV"
+      color-type="hsv"
+      :options="[
+        { min: 0, max: 359 },
+        { min: 1, max: 100 },
+        { min: 0, max: 100 },
+      ]"
+    />
   </div>
 </template>
 
