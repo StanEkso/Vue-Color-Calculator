@@ -20,7 +20,7 @@
     <div class="relative">
       <div
         class="absolute h-3 top-1 w-full bg-opacity-50 z-0 pointer-events-none rounded-sm"
-        :style="colorGradient(index)"
+        :style="colorGradient(key)"
       ></div>
       <RangeInput
         :value="value"
@@ -45,6 +45,11 @@ import {
 import NumberInput from "./range/NumberInput.vue";
 import RangeInput from "./range/RangeInput.vue";
 import { cmyToRgb, hsvToRgb } from "@/utils/colors";
+import {
+  createCMYGradient,
+  createHSVGradient,
+  createRGBGradient,
+} from "@/utils/gradient";
 
 export default defineComponent({
   name: "ColorInput",
@@ -79,35 +84,28 @@ export default defineComponent({
       };
       this.$emit("update:color", newColor);
     },
-    colorGradient(num = 0) {
-      const values = [this.rgbColor.r, this.rgbColor.g, this.rgbColor.b];
-      values[num] = 0;
-      const start = `${values.join(",")}`;
-      values[num] = 255;
-      const end = `${values.join(",")}`;
-      switch (this.colorType) {
-        case "hsv": {
-          const convertedStartColor = hsvToRgb({
-            ...this.color,
-            [Object.keys(this.color)[num]]: 0,
-          } as HSVColor);
-          const convertedEndColor = hsvToRgb({
-            ...this.color,
-            [Object.keys(this.color)[num]]: this.options[num].max,
-          } as HSVColor);
-          const start = `${convertedStartColor.r}, ${convertedStartColor.g}, ${convertedStartColor.b}`;
-          const end = `${convertedEndColor.r}, ${convertedEndColor.g}, ${convertedEndColor.b}`;
-          return {
-            backgroundImage: `linear-gradient(to right, rgba(${start}, 0.5), rgba(${end}, 0.5))`,
-          };
-        }
+    colorGradient(key: string) {
+      switch (this.$props.colorType) {
         case "cmy":
           return {
-            backgroundImage: `linear-gradient(to right, rgba(${end}, 0.5), rgba(${start}, 0.5))`,
+            backgroundImage: createCMYGradient(
+              this.color as CMYColor,
+              key as keyof CMYColor
+            ),
+          };
+        case "hsv":
+          return {
+            backgroundImage: createHSVGradient(
+              this.color as HSVColor,
+              key as keyof HSVColor
+            ),
           };
         default:
           return {
-            backgroundImage: `linear-gradient(to right, rgba(${start}, 0.5), rgba(${end}, 0.5))`,
+            backgroundImage: createRGBGradient(
+              this.rgbColor,
+              key as keyof RGBColor
+            ),
           };
       }
     },
