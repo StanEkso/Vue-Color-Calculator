@@ -5,8 +5,26 @@
     </h1>
     <div class="w-32 h-32 border-2" :style="previewStyles"></div>
     <div class="flex flex-col gap-3 lg:flex-row sm:gap-6">
-      <ColorInput :color="RGBColor" @update:color="setRGB" color-type="rgb" />
-      <ColorInput :color="CMYColor" @update:color="setCMY" color-type="cmy" />
+      <ColorInput
+        :options="[
+          { min: 0, max: 255 },
+          { min: 0, max: 255 },
+          { min: 0, max: 255 },
+        ]"
+        :color="RGBColor"
+        @update:color="setRGB"
+        color-type="rgb"
+      />
+      <ColorInput
+        :options="[
+          { min: 0, max: 255 },
+          { min: 0, max: 255 },
+          { min: 0, max: 255 },
+        ]"
+        :color="CMYColor"
+        @update:color="setCMY"
+        color-type="cmy"
+      />
       <ColorInput
         :color="HSVColor"
         @update:color="setHSV"

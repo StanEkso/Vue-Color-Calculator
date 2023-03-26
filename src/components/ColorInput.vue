@@ -3,35 +3,15 @@
     <h3 class="text-xl font-semibold">
       {{ Object.keys(color).join("").toUpperCase() }}
     </h3>
-    <div
+    <ColorComposeInput
       v-for="([key, value], index) in Object.entries(color)"
       :key="key"
-      class="flex gap-2 items-center"
-    >
-      <label :for="key" class="w-8 text-center font-black">{{
-        key.toUpperCase()
-      }}</label>
-      <NumberInput
-        :value="value"
-        @update:value="onColorChange"
-        :name="key"
-        :min="options[index]?.min || 0"
-        :max="options[index]?.max || 100"
-      />
-      <div class="relative">
-        <div
-          class="absolute h-3 top-[6px] w-full bg-opacity-50 z-0 pointer-events-none rounded-lg"
-          :style="colorGradient(key)"
-        ></div>
-        <RangeInput
-          :value="value"
-          @update:value="onColorChange"
-          :name="key"
-          :min="options[index]?.min || 0"
-          :max="options[index]?.max || 100"
-        />
-      </div>
-    </div>
+      :value="value"
+      :name="key"
+      :gradient-string="computeGradient(key)"
+      :options="options[index]"
+      @update:value="onColorChange"
+    />
   </div>
 </template>
 
@@ -44,14 +24,9 @@ import {
   HSVColor,
   RGBColor,
 } from "@/types/colors";
-import NumberInput from "./range/NumberInput.vue";
-import RangeInput from "./range/RangeInput.vue";
 import { cmyToRgb, hsvToRgb } from "@/utils/colors";
-import {
-  createCMYGradient,
-  createHSVGradient,
-  createRGBGradient,
-} from "@/utils/gradient";
+import { createGradient } from "@/utils/gradient";
+import ColorComposeInput from "./range/ColorComposeInput.vue";
 
 export default defineComponent({
   name: "ColorInput",
@@ -63,12 +38,7 @@ export default defineComponent({
     },
     options: {
       type: Object as PropType<ColorInputOption[]>,
-      // eslint-disable-next-line vue/require-valid-default-prop
-      default: () => [
-        { min: 0, max: 255 },
-        { min: 0, max: 255 },
-        { min: 0, max: 255 },
-      ],
+      required: true,
     },
     colorType: {
       type: String as PropType<"rgb" | "hsv" | "cmy">,
@@ -77,39 +47,14 @@ export default defineComponent({
   },
   emits: ["update:color"],
   methods: {
-    onColorChange(event: Event) {
-      const value = (event.target as HTMLInputElement).value;
-      const name = (event.target as HTMLInputElement).name;
-      const newColor: Color = {
+    onColorChange({ field, value }: { field: string; value: string }) {
+      this.$emit("update:color", {
         ...this.color,
-        [name]: +value,
-      };
-      this.$emit("update:color", newColor);
+        [field]: +value,
+      });
     },
-    colorGradient(key: string) {
-      switch (this.$props.colorType) {
-        case "cmy":
-          return {
-            backgroundImage: createCMYGradient(
-              this.color as CMYColor,
-              key as keyof CMYColor
-            ),
-          };
-        case "hsv":
-          return {
-            backgroundImage: createHSVGradient(
-              this.color as HSVColor,
-              key as keyof HSVColor
-            ),
-          };
-        default:
-          return {
-            backgroundImage: createRGBGradient(
-              this.rgbColor,
-              key as keyof RGBColor
-            ),
-          };
-      }
+    computeGradient(key: string) {
+      return createGradient(this.color, key, this.colorType);
     },
   },
   computed: {
@@ -124,6 +69,6 @@ export default defineComponent({
       }
     },
   },
-  components: { NumberInput, RangeInput },
+  components: { ColorComposeInput },
 });
 </script>

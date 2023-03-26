@@ -52,3 +52,29 @@ export const createHSVGradient: CreateGradient<HSVColor> = (color, field) => {
 export const toRGBString = ({ r, g, b }: RGBColor) => `rgb(${r}, ${g}, ${b})`;
 export const toCMYString = (color: CMYColor) => toRGBString(cmyToRgb(color));
 export const toHSVString = (color: HSVColor) => toRGBString(hsvToRgb(color));
+
+export const createGradient = (color: Color, key: string, type: string) => {
+  switch (type) {
+    case "cmy":
+      return {
+        backgroundImage: createCMYGradient(
+          color as CMYColor,
+          key as keyof CMYColor
+        ),
+      };
+    case "hsv":
+      return {
+        backgroundImage: createHSVGradient(
+          color as HSVColor,
+          key as keyof HSVColor
+        ),
+      };
+    default:
+      return {
+        backgroundImage: createRGBGradient(
+          color as RGBColor,
+          key as keyof RGBColor
+        ),
+      };
+  }
+};

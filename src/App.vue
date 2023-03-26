@@ -16,7 +16,6 @@ export default defineComponent({
 </template>
 
 <style lang="scss">
-@import "@radial-color-picker/vue-color-picker/dist/vue-color-picker.min.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
