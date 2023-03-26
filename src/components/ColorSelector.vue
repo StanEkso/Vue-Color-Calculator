@@ -1,7 +1,8 @@
 <template>
-  <div class="hello">
-    <h1>Current Color: {{ HEXColor }}</h1>
-    <h2>Preview:</h2>
+  <div class="flex flex-col gap-4">
+    <h1 class="text-xl">
+      Current Color: <span>{{ HEXColor }}</span>
+    </h1>
     <div class="w-32 h-32 border-2" :style="previewStyles"></div>
     <div class="flex flex-col gap-3 lg:flex-row sm:gap-6">
       <ColorInput :color="RGBColor" @update:color="setRGB" color-type="rgb" />
@@ -37,9 +38,6 @@ export default defineComponent({
   },
   methods: {
     ...mapActions(["setRGB", "setHSV", "setCMY"]),
-    log(...args: unknown[]) {
-      console.log(...args);
-    },
   },
   components: {
     ColorInput,
